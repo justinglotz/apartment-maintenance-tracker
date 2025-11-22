@@ -58,6 +58,7 @@ model Issue {
   user        User     @relation(fields: [user_id], references: [id])
   complex     Complex  @relation(fields: [complex_id], references: [id])
   photos      Photo[]
+  messages    Message[]
 
   @@map("issues")
 }
