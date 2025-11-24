@@ -6,11 +6,11 @@ const prisma = new PrismaClient();
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    // Fetch all users from the database
-    const users = await prisma.user.findMany();
-    res.json(users);
+    // Fetch all photos from the database
+    const photos = await prisma.photo.findMany();
+    res.json(photos);
   } catch (error: any) {
-    console.error('Error fetching users:', error);
+    console.error('Error fetching photos:', error);
     res.status(500).json({
       error: error.message
     });
@@ -19,10 +19,9 @@ router.get('/', async (req: Request, res: Response) => {
 
 // OTHER ENDPOINTS TO ADD:
 
-// GET a specific user
-// GET all users for a specific complex
-// POST a new user
-// PUT a user
-// DELETE a user
+// GET all photos for a specific issue
+// POST a new photo
+// PUT a photo
+// DELETE a photo
 
 export default router;
