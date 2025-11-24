@@ -17,4 +17,12 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
+// OTHER ENDPOINTS TO ADD:
+
+// GET a specific user
+// GET all users for a specific complex
+// POST a new user
+// PUT a user
+// DELETE a user
+
 export default router;
