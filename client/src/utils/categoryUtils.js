@@ -10,10 +10,12 @@ export const formatCategory = (category) => {
 };
   if (!category) return '';
   
-  // Convert underscores to spaces and title case each word
+  // List of acronyms to preserve casing
+  const acronyms = ['HVAC'];
+  // Convert underscores to spaces and title case each word, preserving acronyms
   return category
     .split('_')
-    .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+    .map(word => acronyms.includes(word) ? word : word.charAt(0) + word.slice(1).toLowerCase())
     .join(' ');
 };
 
