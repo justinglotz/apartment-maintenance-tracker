@@ -1,18 +1,16 @@
 import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import jwt from 'jsonwebtoken';
-
 const router = express.Router();
-const prisma = new PrismaClient();
 
 router.post('/login', async (req: Request, res: Response) => {
-    // Does user exist in database?
+  // Does user exist in database?
   try {
     const result = await prisma.user.findUnique({
-        where: {
-            email: req.body.email,
-        },
-        select: {
+      where: {
+        email: req.body.email,
+      },
+      select: {
         id: true,
         email: true,
         role: true,
@@ -23,7 +21,7 @@ router.post('/login', async (req: Request, res: Response) => {
         building_name: true,
         address: true,
         move_in_date: true,
-        }
+      }
     })
 
     // Yes, user exists in database
@@ -32,11 +30,11 @@ router.post('/login', async (req: Request, res: Response) => {
     const secret = process.env.JWT_SECRET;
     console.log(process.env)
     if (!secret) {
-        return res.status(500).json({ status: "Error", message: "JWT secret not configured on server" });
+      return res.status(500).json({ status: "Error", message: "JWT secret not configured on server" });
     }
 
     const token = jwt.sign(
-        {
+      {
         userId: result?.id,
         email: result?.email,
         role: result?.role,
@@ -47,10 +45,10 @@ router.post('/login', async (req: Request, res: Response) => {
         building_name: result?.building_name,
         address: result?.address,
         move_in_date: result?.move_in_date
-    },
-    secret,
-    {expiresIn: '1h'}
-)
+      },
+      secret,
+      { expiresIn: '1h' }
+    )
 
     // Send necessary user information and token to client
     res.status(200).json({
@@ -60,7 +58,7 @@ router.post('/login', async (req: Request, res: Response) => {
       token
     })
   }
-  catch(error: any){
+  catch (error: any) {
     res.status(400).json({
       status: "Bad Request",
       message: "There was an error retrieving the user from the database",
@@ -92,11 +90,11 @@ router.post('/register', async (req: Request, res: Response) => {
     const secret = process.env.JWT_SECRET;
     console.log(process.env)
     if (!secret) {
-        return res.status(500).json({ status: "Error", message: "JWT secret not configured on server" });
+      return res.status(500).json({ status: "Error", message: "JWT secret not configured on server" });
     }
 
     const token = jwt.sign(
-        {
+      {
         userId: result?.id,
         email: result?.email,
         role: result?.role,
@@ -107,10 +105,10 @@ router.post('/register', async (req: Request, res: Response) => {
         building_name: result?.building_name,
         address: result?.address,
         move_in_date: result?.move_in_date
-    },
-    secret,
-    {expiresIn: '1h'}
-)
+      },
+      secret,
+      { expiresIn: '1h' }
+    )
     res.status(201).json({
       status: "Created",
       message: "User successfully created in database.",
@@ -118,7 +116,7 @@ router.post('/register', async (req: Request, res: Response) => {
       token
     })
   }
-  catch(error: any){
+  catch (error: any) {
     res.status(400).json({
       status: "Bad Request",
       message: "There was an error creating the user in the database",

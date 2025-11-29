@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
+import prisma from '../lib/prisma';
 
 const router = express.Router();
-const prisma = require("../../prisma/client.js");
 
 
 // Health check endpoint that verifies database connection
