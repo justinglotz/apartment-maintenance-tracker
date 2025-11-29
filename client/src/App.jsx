@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import Issues from './pages/Issues';
-import IssueDetail from './pages/IssueDetail';
+import IssueDetail from './Pages/IssueDetail';
 
 function Home() {
   return (
