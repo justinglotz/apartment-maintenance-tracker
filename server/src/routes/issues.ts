@@ -35,7 +35,7 @@ router.get('/:id/messages', authenticateToken, async (req: AuthRequest, res: Res
 });
 
 // GET a specific issue by ID
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const issue = await prisma.issue.findUnique({
       where: {
@@ -80,7 +80,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // POST a new issue
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const { title, description, category, priority, location, user_id, complex_id } = req.body;
 
@@ -133,7 +133,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // PUT/UPDATE an issue
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const { title, description, category, priority, status, location } = req.body;
     const issueId = Number(req.params.id);
@@ -172,7 +172,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 });
 
 // DELETE an issue
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const issueId = Number(req.params.id);
 
