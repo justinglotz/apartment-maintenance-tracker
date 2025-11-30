@@ -17,39 +17,6 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-// OTHER ENDPOINTS TO ADD:
-router.post('/register', async (req: Request, res: Response) => {
-  try {
-    const result = await prisma.user.create({
-      data: req.body,
-      // Excludes the user password in the response.
-      select: {
-        id: true,
-        email: true,
-        role: true,
-        first_name: true,
-        last_name: true,
-        phone: true,
-        apartment_number: true,
-        building_name: true,
-        complex_id: true,
-        move_in_date: true,
-      }
-    })
-      res.status(201).json({
-      status: "Created",
-      message: "User successfully created in database.",
-      user: result,
-    })
-  }
-  catch(error: any){
-    res.status(400).json({
-      status: "Bad Request",
-      message: "There was an error creating the user in the database",
-      error: error.message,
-    })
-  }
-})
 // GET a specific user
 router.get('/:id', async (req: Request, res: Response) => {
   try {
