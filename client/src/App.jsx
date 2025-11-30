@@ -1,5 +1,11 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import Issues from './pages/Issues';
+import { useState } from 'react';
+import { useAuth } from './context/context';
+import { LoginForm } from './Components/authentication/LoginForm'
+import { RegistrationForm } from './Components/authentication/RegistrationForm'
+import { ProtectedRoute } from './Components/authentication/ProtectedRoute';
+
 
 function Home() {
   return (
@@ -19,10 +25,22 @@ function Home() {
 }
 
 function App() {
+  const { token } = useAuth()
+
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/issues" element={<Issues />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/register" element={<RegistrationForm />} />
+      <Route path="/" element={
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+      } />
+      <Route path="/issues" element={
+        <ProtectedRoute>
+          <Issues />
+        </ProtectedRoute>
+      } />
     </Routes>
   );
 }
