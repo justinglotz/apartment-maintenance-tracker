@@ -28,8 +28,6 @@ function Home() {
 function App() {
   const { token } = useAuth()
 
-  const { token } = useAuth()
-
   return (
     <Routes>
       <Route path="/login" element={<LoginForm />} />
