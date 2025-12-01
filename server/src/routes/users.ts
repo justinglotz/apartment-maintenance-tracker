@@ -19,7 +19,7 @@ router.get('/', authenticateToken, async (req: AuthRequest, res: Response) => {
 });
 
 // GET a specific user
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const uniqueUser = await prisma.user.findUnique({
       where: {
@@ -73,7 +73,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 })
 // GET all users for a specific complex
-router.get('/in-apartment/:apartmentId', async (req: Request, res: Response) => {
+router.get('/in-apartment/:apartmentId', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const usersByApartmentId = await prisma.user.findMany({
       where: {
@@ -112,7 +112,7 @@ router.get('/in-apartment/:apartmentId', async (req: Request, res: Response) => 
 })
 
 // PUT a user
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     // Verifies that user first exists before update
     const uniqueUser = await prisma.user.findUnique({
@@ -164,7 +164,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 })
 
 // DELETE a user
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
      // Verifies that user first exists before update
     const uniqueUser = await prisma.user.findUnique({
