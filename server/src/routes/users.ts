@@ -60,7 +60,7 @@ router.get('/:id', authenticateToken, async (req: AuthRequest, res: Response) =>
         phone: uniqueUser?.phone,
         apartment_number: uniqueUser?.apartment_number,
         building_name: uniqueUser?.building_name,
-        address: uniqueUser?.complex_id,
+        complex_id: uniqueUser?.complex_id,
         move_in_date: uniqueUser?.move_in_date,
       }
     })

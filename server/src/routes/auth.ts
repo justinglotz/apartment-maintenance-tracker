@@ -6,6 +6,7 @@ const router = express.Router();
 router.post('/login', async (req: Request, res: Response) => {
   // Does user exist in database?
   try {
+    console.log(req.body.email)
     const result = await prisma.user.findUnique({
       where: {
         email: req.body.email,
@@ -28,7 +29,6 @@ router.post('/login', async (req: Request, res: Response) => {
 
     // Creates user token
     const secret = process.env.JWT_SECRET;
-    console.log(process.env)
     if (!secret) {
       return res.status(500).json({ status: "Error", message: "JWT secret not configured on server" });
     }
@@ -69,6 +69,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
 router.post('/register', async (req: Request, res: Response) => {
   try {
+    console.log(req.body)
     const result = await prisma.user.create({
       data: req.body,
       // Excludes the user password in the response.
