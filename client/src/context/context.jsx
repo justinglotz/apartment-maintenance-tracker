@@ -25,6 +25,23 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    useEffect(() => {
+        const locallyStoredToken = localStorage.getItem("token")
+        decodeJwtForUser(locallyStoredToken)
+    }, [])
+
+    function decodeJwtForUser(token) {
+        try {
+            // Parses encoded, locally stored token
+            // from base64 to human-readable
+            // decodes user data incorporated encoded at JWT generation
+            const payload = JSON.parse(atob(token.split('.')[1]))
+            setUser(payload)
+        } catch(error) {
+            return null
+        }
+    }
+
     async function login(userCredentials) {
         try {
 
@@ -76,6 +93,10 @@ export const AuthProvider = ({ children }) => {
         setToken(null)
         setUser(null)
         navigate("/login")
+    }
+
+    function restoreToken(locallyStoredToken) {
+        setToken(locallyStoredToken)
     }
 
     return (
