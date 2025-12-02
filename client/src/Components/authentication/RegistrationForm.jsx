@@ -7,12 +7,12 @@ export const RegistrationForm = () => {
     const navigate = useNavigate()
     const { register, user, updateUser } = useAuth();
     const [userFormData, setUserFormData] = useState({
-        email: '',
-        password_hash: '',
-        role: 'TENANT',
-        first_name: '',
-        last_name: '',
-        phone: '',  
+        email: 'eb934053@gmail.com',
+        password_hash: 'password',
+        role: 'LANDLORD',
+        first_name: 'Ethan',
+        last_name: 'Brown',
+        phone: '6156182727',  
         complex_id: 1,
         apartment_number: '',
         building_name: '',
@@ -99,7 +99,6 @@ export const RegistrationForm = () => {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        console.log("Button clicked")
         const validationErrors = validate()
 
         if (Object.keys(validationErrors).length > 0) {
