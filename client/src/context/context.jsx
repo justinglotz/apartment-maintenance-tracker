@@ -95,10 +95,6 @@ export const AuthProvider = ({ children }) => {
         navigate("/login")
     }
 
-    function restoreToken(locallyStoredToken) {
-        setToken(locallyStoredToken)
-    }
-
     return (
         <AuthContext.Provider value={{token, user, updateUser, register, login, logout}}>
             { children }
