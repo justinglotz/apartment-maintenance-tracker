@@ -1,9 +1,10 @@
 import express, { Request, Response } from 'express';
 import prisma from '../lib/prisma';
+import { AuthRequest, authenticateToken } from '../middleware/auth';
 
 const router = express.Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     // Fetch all users from the database
     const users = await prisma.user.findMany();
@@ -18,7 +19,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // GET a specific user
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const uniqueUser = await prisma.user.findUnique({
       where: {
@@ -72,7 +73,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 })
 // GET all users for a specific complex
-router.get('/in-apartment/:apartmentId', async (req: Request, res: Response) => {
+router.get('/in-apartment/:apartmentId', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const usersByApartmentId = await prisma.user.findMany({
       where: {
@@ -111,7 +112,7 @@ router.get('/in-apartment/:apartmentId', async (req: Request, res: Response) => 
 })
 
 // PUT a user
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     // Verifies that user first exists before update
     const uniqueUser = await prisma.user.findUnique({
@@ -163,7 +164,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 })
 
 // DELETE a user
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
      // Verifies that user first exists before update
     const uniqueUser = await prisma.user.findUnique({
