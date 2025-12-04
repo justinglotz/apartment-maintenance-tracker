@@ -22,8 +22,8 @@ export const RegistrationForm = () => {
 
     });
     const [landlordComplexFormData, setLandLordComplexFormData] = useState({
-        name: 'Shady Oaks',
-        address: '123 Main St',
+        name: '',
+        address: '',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
 
@@ -256,22 +256,22 @@ export const RegistrationForm = () => {
                     :
                     <>
                     <h3 className="text-1x1 font-bold mb-8 text-gray-800">Optional fields</h3>
-                    <label htmlFor="landlord_building_name" className="block text-sm font-medium text-gray-700 mb-1">Building name: </label>
+                    <label htmlFor="building_name" className="block text-sm font-medium text-gray-700 mb-1">Building name: </label>
                         <input
                             type="text"
                             value={userFormData.building_name}
-                            id="landlord_building_name"
-                            name="landlord_building_name"
+                            id="building_name"
+                            name="building_name"
                             onChange={handleUserChange}
                             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
-                        <label htmlFor="landlord_apartment_number" className="block text-sm font-medium text-gray-700 mb-1">Apartment number: </label>
+                        <label htmlFor="apartment_number" className="block text-sm font-medium text-gray-700 mb-1">Apartment number: </label>
                         <input
                             type="text"
                             value={userFormData.apartment_number}
-                            id="landlord_apartment_number"
-                            name="landlord_apartment_number"
-                            onChange={handleComplexChange}
+                            id="apartment_number"
+                            name="apartment_number"
+                            onChange={handleUserChange}
                             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         />
                         <h3 className="text-1x1 font-bold mb-8 text-gray-800">Please, enter information about your apartment complex</h3>

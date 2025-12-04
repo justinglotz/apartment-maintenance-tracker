@@ -40,7 +40,7 @@ function App() {
       }>
       <Route path="/" element={
         <ProtectedRoute>
-          <Layout />
+          <Home />
         </ProtectedRoute>
       } />
         <Route path="/issues" element={
