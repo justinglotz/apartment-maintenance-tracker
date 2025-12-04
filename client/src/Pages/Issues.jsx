@@ -12,12 +12,7 @@ const Issues = () => {
 
   // Fetch issues when component mounts
   useEffect(() => {
-    const locallyStoredToken = localStorage.getItem("token")
-
-    if(locallyStoredToken) {
       fetchIssues();
-    }
-    console.log("Waiting for token")
   }, []);
 
   const fetchIssues = async () => {
