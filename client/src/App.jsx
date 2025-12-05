@@ -1,12 +1,12 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import Issues from './Pages/Issues';
 import IssueDetail from './Pages/IssueDetail';
+import EditIssue from './Pages/EditIssue';
 import { useAuth } from './context/context';
 import { LoginForm } from './Components/authentication/LoginForm'
 import { RegistrationForm } from './Components/authentication/RegistrationForm'
 import { ProtectedRoute } from './Components/authentication/ProtectedRoute';
 import { Layout } from './Components/authentication/Logout';
-
 
 function Home() {
   return (
@@ -38,20 +38,25 @@ function App() {
           <Layout />
         </ProtectedRoute>
       }>
-      <Route path="/" element={
-        <ProtectedRoute>
-          <Home />
-        </ProtectedRoute>
-      } />
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        } />
         <Route path="/issues" element={
-        <ProtectedRoute>
-          <Issues />
-        </ProtectedRoute>
-      } />
+          <ProtectedRoute>
+            <Issues />
+          </ProtectedRoute>
+        } />
       </Route>
       <Route path="/issues/:id" element={
         <ProtectedRoute>
           <IssueDetail />
+        </ProtectedRoute>
+      } />
+      <Route path="/issues/:id/edit" element={
+        <ProtectedRoute>
+          <EditIssue />
         </ProtectedRoute>
       } />
     </Routes>
