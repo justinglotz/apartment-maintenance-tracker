@@ -78,4 +78,27 @@ export const issueAPI = {
   },
 };
 
+// Photo API calls
+export const photoAPI = {
+  // Delete photo
+  deletePhoto: async (photoId) => {
+    try {
+      await api.delete(`/photos/${photoId}`);
+    } catch (error) {
+      console.error("Error deleting photo:", error);
+      throw error;
+    }
+  },
+  // Get presigned URLs for upload
+  getPresignedUrls: async (files) => {
+    try {
+      const response = await api.post("/photos/presigned-urls", { files });
+      return response.data;
+    } catch (error) {
+      console.error("Error getting presigned URLs:", error);
+      throw error;
+    }
+  },
+};
+
 export default api;
