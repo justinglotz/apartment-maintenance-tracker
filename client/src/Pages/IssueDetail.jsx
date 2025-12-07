@@ -92,12 +92,12 @@ const IssueDetail = () => {
     }));
   }
 
-  const handleCaptionUpdate = (e) => {
+  const handleCaptionUpdate = async (e) => {
     e.preventDefault();
 
     const { id } = e.target
 
-    
+    await photoAPI.updatePhoto()
   }
 
   if (loading) {
