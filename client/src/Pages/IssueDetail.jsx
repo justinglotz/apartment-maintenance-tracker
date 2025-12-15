@@ -501,7 +501,7 @@ const IssueDetail = () => {
             </h2>
           </CardHeader>
           <CardContent>
-           <Messages issue={issue}/>
+           <Messages issue={issue} fetchIssueDetail={fetchIssueDetail}/>
           </CardContent>
         </Card>
       </div>
