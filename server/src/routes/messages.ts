@@ -18,14 +18,12 @@ router.get('/', authenticateToken, async (req: AuthRequest, res: Response) => {
 });
 
 // POST a new message
-router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.post('/', async (req: AuthRequest, res: Response) => {
   try {
-    const { issue_id, message_text } = req.body;
-    const sender_id = req.user!.userId;
-
+    const { issue_id, message_text, sender_id, sender_role } = req.body
     // Validate issue exists and user has access
     const issue = await prisma.issue.findUnique({
-      where: { id: issue_id },
+      where:  {id: issue_id} ,
       include: { user: true, complex: true }
     });
 
@@ -33,19 +31,9 @@ router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ error: 'Issue not found' });
     }
 
-    // Check if user is tenant of the issue or landlord
-    const isAuthorized = issue.user_id === sender_id || req.user!.role === 'LANDLORD';
-    if (!isAuthorized) {
-      return res.status(403).json({ error: 'Unauthorized to send messages for this issue' });
-    }
 
     const message = await prisma.message.create({
-      data: {
-        issue_id,
-        sender_id,
-        message_text,
-        sender_type: req.user!.role
-      },
+      data: req.body,
       include: {
         sender: {
           select: {

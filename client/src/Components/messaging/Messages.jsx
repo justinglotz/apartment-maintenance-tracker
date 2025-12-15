@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useSocket } from '../../context/SocketContext';
 import { issueAPI } from '../../services/api';
 import { MessageSquare, User } from "lucide-react"
+import { useAuth } from '../../context/context';
 
-export const Messages = ({ issue }) => {
+export const Messages = ({ issue, fetchIssueDetail }) => {
   const [messages, setMessages] = useState(issue.messages || []);
   const [newMessage, setNewMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const socket = useSocket();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (socket && issue.id) {
@@ -28,10 +30,18 @@ export const Messages = ({ issue }) => {
   const handleSendMessage = async () => {
     if (!newMessage.trim() || isSending) return;
 
+    const messageBody = {
+      issue_id: issue.id,
+      message_text: newMessage.trim(),
+      sender_id: user.id,
+      sender_type: user.role
+    }
+
     setIsSending(true);
     try {
-      const response = await issueAPI.sendMessage(issue.id, newMessage.trim());
+      const response = await issueAPI.sendMessage(messageBody);
       setNewMessage('');
+      fetchIssueDetail();
     } catch (error) {
       console.error('Error sending message:', error);
     } finally {
