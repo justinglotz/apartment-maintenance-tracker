@@ -91,12 +91,9 @@ export const issueAPI = {
   },
 
   // Send a message for an issue
-  sendMessage: async (issueId, messageText) => {
+  sendMessage: async (message) => {
     try {
-      const response = await api.post('/messages', {
-        issue_id: issueId,
-        message_text: messageText
-      });
+      const response = await api.post('/messages', message);
       return response.data;
     } catch (error) {
       console.error('Error sending message:', error);
