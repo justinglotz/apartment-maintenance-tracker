@@ -215,6 +215,15 @@ router.delete('/:id', async (req: AuthRequest, res: Response) => {
   try {
     const issueId = Number(req.params.id);
 
+    // Delete associated records first to avoid foreign key constraint violations
+    await prisma.message.deleteMany({
+      where: { issue_id: issueId }
+    });
+
+    await prisma.photo.deleteMany({
+      where: { issue_id: issueId }
+    });
+
     await prisma.issue.delete({
       where: { id: issueId }
     });
