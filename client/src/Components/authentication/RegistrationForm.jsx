@@ -111,7 +111,6 @@ export const RegistrationForm = () => {
         }
 
         // building_name is now optional for all users
-        
         if (!landlordComplexFormData.name.trim() && userFormData.role !== "TENANT") {
             newErrors.name = 'Complex name is required';
         }
