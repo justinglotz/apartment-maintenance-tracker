@@ -32,7 +32,6 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // Yes, user exists in database
-
     // Creates user token
     const secret = process.env.JWT_SECRET;
     if (!secret) {
