@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader } from '../components/ui/card';
-import { StatusBadge } from '../components/StatusBadge';
-import { PriorityBadge } from '../components/PriorityBadge';
-import { PhotoUpload } from '../Components/PhotoUpload';
-import { formatCategory } from '@/utils/categoryUtils';
-import { getDaysAgo } from '@/utils/dateUtils';
-import { issueAPI, photoAPI } from '../services/api';
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader } from "../components/ui/card";
+import { StatusBadge } from "../components/StatusBadge";
+import { PriorityBadge } from "../components/PriorityBadge";
+import { PhotoUpload } from "../Components/PhotoUpload";
+import { formatCategory } from "@/utils/categoryUtils";
+import { getDaysAgo } from "@/utils/dateUtils";
+import { issueAPI, photoAPI } from "../services/api";
 import {
   Calendar,
   Camera,
@@ -22,7 +22,7 @@ import {
   Edit,
   Trash2,
   X,
-} from 'lucide-react';
+} from "lucide-react";
 
 const IssueDetail = () => {
   const { id } = useParams();
@@ -42,15 +42,15 @@ const IssueDetail = () => {
       const data = await issueAPI.getIssueById(id);
       setIssue(data);
     } catch (err) {
-      console.error('Failed to fetch issue:', err);
-      setError('Failed to load issue details. Please try again later.');
+      console.error("Failed to fetch issue:", err);
+      setError("Failed to load issue details. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleBack = () => {
-    navigate('/issues');
+    navigate("/issues");
   };
 
   const handleEdit = () => {
@@ -58,74 +58,86 @@ const IssueDetail = () => {
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this issue? This action cannot be undone.')) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this issue? This action cannot be undone."
+      )
+    ) {
       try {
         await issueAPI.deleteIssue(id);
-        navigate('/issues');
+        navigate("/issues");
       } catch (err) {
-        console.error('Failed to delete issue:', err);
-        alert('Failed to delete issue. Please try again.');
+        console.error("Failed to delete issue:", err);
+        alert("Failed to delete issue. Please try again.");
       }
     }
   };
 
   const handleDeletePhoto = async (photoId) => {
-    if (!window.confirm('Are you sure you want to delete this photo?')) {
+    if (!window.confirm("Are you sure you want to delete this photo?")) {
       return;
     }
 
     try {
       await photoAPI.deletePhoto(photoId);
-      await fetchIssueDetail();
+      setIssue((prevIssue) => ({
+        ...prevIssue,
+        photos: prevIssue.photos.filter((p) => p.id !== photoId),
+      }));
     } catch (err) {
-      console.error('Failed to delete photo:', err);
-      alert('Failed to delete photo. Please try again.');
+      console.error("Failed to delete photo:", err);
+      alert("Failed to delete photo. Please try again.");
     }
   };
 
   const handleCaptionChange = (e) => {
     // Destructs the id and value keys from the input
-    const { id, value } = e.target
+    const { id, value } = e.target;
 
     // Separates photos from the issue object
     const photosArray = issue.photos;
 
     // Filters photos by id
     let filteredPhotoArray = photosArray.filter((photo) => {
-      return photo.id === parseInt(id)
-    })
+      return photo.id === parseInt(id);
+    });
 
     // Extracts unique photo from filter array
-    const uniquePhoto = filteredPhotoArray[0]
+    const uniquePhoto = filteredPhotoArray[0];
 
     // Updates caption property on the unique photo
-    uniquePhoto.caption = value
-  }
+    uniquePhoto.caption = value;
+  };
 
   const handleCaptionUpdate = async (e) => {
-
     // Prevents page refresh before API call
     e.preventDefault();
 
     // Destructs id from button input
-    const { id } = e.target
+    const { id } = e.target;
 
     // Separates photos from the issue object
     const photosArray = issue.photos;
 
     // Filters photos by id
     let filteredPhotoArray = photosArray.filter((photo) => {
-      return photo.id === parseInt(id)
-    })
+      return photo.id === parseInt(id);
+    });
 
     // Extracts unique photo from filter array
-    const uniquePhoto = filteredPhotoArray[0]
+    const uniquePhoto = filteredPhotoArray[0];
 
     // Sends unique photo to be updated in database
-    await photoAPI.updatePhoto(uniquePhoto)
+    await photoAPI.updatePhoto(uniquePhoto);
 
-    fetchIssueDetail()
-  }
+    // Update local state for photos instead of fetching entire issue
+    setIssue((prevIssue) => ({
+      ...prevIssue,
+      photos: prevIssue.photos.map((photo) =>
+        photo.id === uniquePhoto.id ? uniquePhoto : photo
+      ),
+    }));
+  };
 
   if (loading) {
     return (
@@ -170,7 +182,7 @@ const IssueDetail = () => {
             Back to Issues
           </button>
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
-            <p>{error || 'Issue not found'}</p>
+            <p>{error || "Issue not found"}</p>
             <button
               onClick={fetchIssueDetail}
               className="text-sm underline hover:no-underline mt-2"
@@ -232,7 +244,9 @@ const IssueDetail = () => {
               <div className="text-right text-sm text-muted-foreground">
                 <div className="flex items-center gap-1 justify-end mb-1">
                   <Calendar className="h-4 w-4" />
-                  <span>Created {new Date(issue.createdAt).toLocaleDateString()}</span>
+                  <span>
+                    Created {new Date(issue.createdAt).toLocaleDateString()}
+                  </span>
                 </div>
                 <div className="text-xs">
                   Updated {getDaysAgo(issue.updatedAt)}
@@ -245,7 +259,9 @@ const IssueDetail = () => {
             {/* Description */}
             <div className="mb-6">
               <h2 className="text-lg font-semibold mb-2">Description</h2>
-              <p className="text-gray-700 whitespace-pre-wrap">{issue.description}</p>
+              <p className="text-gray-700 whitespace-pre-wrap">
+                {issue.description}
+              </p>
             </div>
 
             {/* Location */}
@@ -268,7 +284,9 @@ const IssueDetail = () => {
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-gray-500" />
                     <span className="font-medium">Name:</span>
-                    <span>{issue.user.first_name} {issue.user.last_name}</span>
+                    <span>
+                      {issue.user.first_name} {issue.user.last_name}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-gray-500" />
@@ -414,9 +432,11 @@ const IssueDetail = () => {
                       <StatusBadge status={issue.status} />
                     </div>
                     <div className="text-sm text-gray-500">
-                      {issue.status === 'OPEN' && 'Awaiting response from management'}
-                      {issue.status === 'IN_PROGRESS' && 'Work in progress'}
-                      {issue.status === 'RESOLVED' && 'Awaiting tenant confirmation'}
+                      {issue.status === "OPEN" &&
+                        "Awaiting response from management"}
+                      {issue.status === "IN_PROGRESS" && "Work in progress"}
+                      {issue.status === "RESOLVED" &&
+                        "Awaiting tenant confirmation"}
                     </div>
                   </div>
                 </div>
@@ -441,15 +461,15 @@ const IssueDetail = () => {
                     <div className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         src={photo.file_path}
-                        alt={photo.caption || 'Issue photo'}
+                        alt={photo.caption || "Issue photo"}
                         className="w-400 h-400 object-cover"
-                    />
-                    <button
-                      onClick={() => handleDeletePhoto(photo.id)}
-                      className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700"
+                      />
+                      <button
+                        onClick={() => handleDeletePhoto(photo.id)}
+                        className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700"
                       >
-                      <X className="h-4 w-4" />
-                    </button>
+                        <X className="h-4 w-4" />
+                      </button>
                     </div>
                     <div>
                       {photo.caption ? (
@@ -486,7 +506,19 @@ const IssueDetail = () => {
 
             <PhotoUpload
               issueId={id}
-              onUploadComplete={fetchIssueDetail}
+              onUploadComplete={(newPhotos) => {
+                setIssue((prevIssue) => {
+                  const updatedIssue = {
+                    ...prevIssue,
+                    photos: [
+                      ...prevIssue.photos,
+                      ...(Array.isArray(newPhotos) ? newPhotos : [newPhotos]),
+                    ],
+                  };
+
+                  return updatedIssue;
+                });
+              }}
             />
           </CardContent>
         </Card>
@@ -511,7 +543,8 @@ const IssueDetail = () => {
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4 text-gray-500" />
                         <span className="font-medium">
-                          {message.sender?.first_name} {message.sender?.last_name}
+                          {message.sender?.first_name}{" "}
+                          {message.sender?.last_name}
                         </span>
                         <span className="px-2 py-0.5 bg-gray-200 rounded text-xs">
                           {message.sender?.role}

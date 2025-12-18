@@ -85,7 +85,8 @@ export const PhotoUpload = ({ issueId, onUploadComplete }) => {
 
       // Clear selection and refresh
       setSelectedFiles([]);
-      onUploadComplete(); // Call parent's refresh function
+      const savedPhotos = await saveResponse.json();
+      onUploadComplete(savedPhotos);
 
     } catch (err) {
       console.error('Upload failed:', err);

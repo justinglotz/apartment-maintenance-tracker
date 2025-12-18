@@ -79,7 +79,7 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     // Save photos to database
-    const savedPhotos = await prisma.photo.createMany({
+    await prisma.photo.createMany({
       data: photos.map(photo => ({
         issue_id: parseInt(issueId),
         file_path: photo.fileUrl,
@@ -90,10 +90,16 @@ router.post('/', async (req: Request, res: Response) => {
       }))
     });
 
-    res.json({
-      success: true,
-      count: savedPhotos.count
+    const savedPhotos = await prisma.photo.findMany({
+      where: {
+        issue_id: parseInt(issueId)
+      },
+      orderBy: {
+        uploaded_at: 'desc'
+      },
+      take: photos.length
     });
+    res.json(savedPhotos);
 
   } catch (error: any) {
     console.error('Error saving photos:', error);
