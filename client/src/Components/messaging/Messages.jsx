@@ -4,7 +4,7 @@ import { issueAPI } from '../../services/api';
 import { MessageSquare, User } from "lucide-react"
 import { useAuth } from '../../context/context';
 
-export const Messages = ({ issue }) => {
+export const Messages = ({ issue, onMessageUpdate }) => {
   const [messages, setMessages] = useState(issue.messages || []);
   const [newMessage, setNewMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -12,12 +12,20 @@ export const Messages = ({ issue }) => {
   const { user } = useAuth();
 
   useEffect(() => {
+    setMessages(issue.messages || []);
+  }, [issue.messages]);
+
+  useEffect(() => {
     if (socket && issue.id) {
       socket.emit('join-issue', issue.id);
 
       socket.on('new-message', (message) => {
         if (message.issue_id === issue.id) {
-          setMessages(prev => [...prev, message]);
+          setMessages(prev => {
+          const updated = [...prev, message]
+          onMessageUpdate(updated)
+          return updated;
+          });
         }
       });
 
@@ -25,7 +33,7 @@ export const Messages = ({ issue }) => {
         socket.off('new-message');
       };
     }
-  }, [socket, issue.id]);
+  }, [socket, issue.id, onMessageUpdate]);
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || isSending) return;

@@ -533,7 +533,12 @@ const IssueDetail = () => {
             </h2>
           </CardHeader>
           <CardContent>
-           <Messages issue={issue} fetchIssueDetail={fetchIssueDetail}/>
+           <Messages 
+           issue={issue} 
+           fetchIssueDetail={fetchIssueDetail} 
+           onMessageUpdate={(updatedMessages) => {
+            setIssue(prev => ({ ...prev, messages: updatedMessages}))
+           }} />
           </CardContent>
         </Card>
       </div>
