@@ -84,13 +84,14 @@ const Issues = () => {
     // Date range filter (assuming issue has createdAt field)
     if (
       filters.startDate &&
-      new Date(issue.createdAt) < new Date(filters.startDate)
+      new Date(issue.createdAt) < new Date(filters.startDate + "T00:00:00")
     ) {
       return false;
     }
+
     if (
       filters.endDate &&
-      new Date(issue.createdAt) > new Date(filters.endDate)
+      new Date(issue.createdAt) > new Date(filters.endDate + "T23:59:59")
     ) {
       return false;
     }
