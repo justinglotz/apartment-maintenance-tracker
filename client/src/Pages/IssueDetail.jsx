@@ -142,7 +142,7 @@ const IssueDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-background p-6">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-center py-12">
             <svg
@@ -173,7 +173,7 @@ const IssueDetail = () => {
 
   if (error || !issue) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-background p-6">
         <div className="max-w-5xl mx-auto">
           <button
             onClick={handleBack}
@@ -197,16 +197,16 @@ const IssueDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-background p-6">
       <div className="max-w-5xl mx-auto">
         {/* Back Button */}
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={handleBack}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-blue-700 hover:text-rose-900 mb-4 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
-            Back to Issues
+            Back to Maintenance Requests 
           </button>
 
           {/* Action Buttons */}
@@ -260,7 +260,7 @@ const IssueDetail = () => {
             {/* Description */}
             <div className="mb-6">
               <h2 className="text-lg font-semibold mb-2">Description</h2>
-              <p className="text-gray-700 whitespace-pre-wrap">
+              <p className="text-black-700 whitespace-pre-wrap">
                 {issue.description}
               </p>
             </div>

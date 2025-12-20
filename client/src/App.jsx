@@ -10,7 +10,7 @@ import { Layout } from './Components/authentication/Logout';
 
 function Home() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           Apartment Tracker

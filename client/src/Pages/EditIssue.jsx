@@ -78,7 +78,7 @@ export default function EditIssue() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
@@ -86,7 +86,7 @@ export default function EditIssue() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
           <button
@@ -101,26 +101,26 @@ export default function EditIssue() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-background p-6">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="mb-6">
           <button
             onClick={() => navigate(`/issues/${id}`)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-blue-700 hover:text-rose-900 transition-colors mb-4"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="font-medium">Cancel</span>
+            <span className="font-medium">Back to Maintenance Request</span>
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">Edit Issue</h1>
+          <h1 className="text-2xl font-bold text-gray-900 text-center">Edit Issue</h1>
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-gray-400 rounded-lg shadow-md p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="title" className="block text-sm font-medium text-gray-900 mb-2">
                 Issue Title *
               </label>
               <input
@@ -129,7 +129,7 @@ export default function EditIssue() {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Brief description of the issue"
                 required
               />
@@ -137,7 +137,7 @@ export default function EditIssue() {
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-900 mb-2">
                 Description *
               </label>
               <textarea
@@ -146,7 +146,7 @@ export default function EditIssue() {
                 value={formData.description}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Detailed description of the issue"
                 required
               />
@@ -154,7 +154,7 @@ export default function EditIssue() {
 
             {/* Category */}
             <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="category" className="block text-sm font-medium text-gray-900 mb-2">
                 Category *
               </label>
               <select
@@ -162,7 +162,7 @@ export default function EditIssue() {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               >
                 <option value="">Select a category</option>
@@ -176,7 +176,7 @@ export default function EditIssue() {
 
             {/* Priority */}
             <div>
-              <label htmlFor="priority" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="priority" className="block text-sm font-medium text-gray-900 mb-2">
                 Priority *
               </label>
               <select
@@ -184,7 +184,7 @@ export default function EditIssue() {
                 name="priority"
                 value={formData.priority}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               >
                 <option value="">Select priority</option>
@@ -198,7 +198,7 @@ export default function EditIssue() {
 
             {/* Location */}
             <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="location" className="block text-sm font-medium text-gray-900 mb-2">
                 Location *
               </label>
               <input
@@ -207,7 +207,7 @@ export default function EditIssue() {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="e.g., Kitchen, Bathroom, Living Room"
                 required
               />
@@ -218,14 +218,14 @@ export default function EditIssue() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-green-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
                 {submitting ? 'Saving Changes...' : 'Save Changes'}
               </button>
               <button
                 type="button"
                 onClick={() => navigate(`/issues/${id}`)}
-                className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                className="px-6 py-3 bg-rose-900 text-white rounded-lg hover:bg-white hover:text-gray-900 border border-rose-700 transition-all font-medium"
               >
                 Cancel
               </button>
