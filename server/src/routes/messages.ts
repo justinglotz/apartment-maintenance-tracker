@@ -2,7 +2,6 @@ import express, { Response } from 'express';
 import prisma from '../lib/prisma';
 import { AuthRequest, authenticateToken } from '../middleware/auth';
 import { sendNewMessageNotification } from '../services/emailService';
-import { join } from 'path';
 
 const router = express.Router();
 
