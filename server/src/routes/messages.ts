@@ -47,9 +47,14 @@ router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
       }
     });
 
-    // Send email notification to tenant if landlord sent the message
+    // Send email notification to tenant if landlord sent message AND user has notifications enabled
     if (req.user && req.user.role === 'LANDLORD') {
-      await sendNewMessageNotification(issue.user, issue, message_text, req.user);
+      const userPreferences = (issue.user.preferences as { emailNotifications?: boolean }) || {};
+      const emailEnabled = userPreferences.emailNotifications !== false; // Default true
+
+      if (emailEnabled) {
+        await sendNewMessageNotification(issue.user, issue, message_text, req.user);
+      }
     }
 
     // Emit real-time event
