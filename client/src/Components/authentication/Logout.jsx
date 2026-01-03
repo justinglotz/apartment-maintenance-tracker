@@ -1,6 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/context";
 import { Plus, LogOut, List, Settings } from "lucide-react";
+import { NotificationBell } from "../NotificationBell";
 
 export const Layout = () => {
   const { logout } = useAuth();
@@ -21,7 +22,7 @@ export const Layout = () => {
           <h1 className="text-xl font-bold text-white">
             Apartment Maintenance Tracker
           </h1>
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <button
               onClick={handleViewIssues}
               className="flex items-center gap-2 px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium shadow-sm"
@@ -49,6 +50,7 @@ export const Layout = () => {
             >
               <Settings className="h-4 w-4" /> Settings
             </button>
+            <NotificationBell />
           </div>
         </div>
       </nav>
