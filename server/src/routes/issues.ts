@@ -215,6 +215,29 @@ router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
       }
     });
 
+    // Notify all landlords in the complex about the new issue
+    if (req.user?.role === 'TENANT') {
+      const landlords = await prisma.user.findMany({
+        where: {
+          complex_id: user.complex_id,
+          role: 'LANDLORD'
+        }
+      });
+
+      // Create in-app notifications for all landlords
+      for (const landlord of landlords) {
+        await prisma.notification.create({
+          data: {
+            user_id: landlord.id,
+            type: 'ISSUE_CREATED',
+            title: 'New maintenance issue reported',
+            message: `${req.user.first_name} ${req.user.last_name} reported: "${title.trim()}"`,
+            issue_id: newIssue.id
+          }
+        });
+      }
+    }
+
     res.status(201).json(newIssue);
   } catch (error: any) {
     console.error('Error creating issue:', error);
@@ -321,6 +344,55 @@ router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) =>
         complex: true
       }
     });
+
+    // Send notifications to tenant when landlord updates the issue
+    if (req.user && req.user.role === 'LANDLORD' && existingIssue.user_id !== userId) {
+      let notificationTitle = '';
+      let notificationMessage = '';
+      let notificationType: 'ISSUE_STATUS_CHANGED' | 'ISSUE_ACKNOWLEDGED' | 'ISSUE_RESOLVED' | 'ISSUE_CLOSED' | 'ISSUE_PRIORITY_CHANGED' = 'ISSUE_STATUS_CHANGED';
+
+      // Determine notification type and message based on what was updated
+      if (status && status !== currentIssue.acknowledged_date) {
+        if (status === 'IN_PROGRESS' && !currentIssue.acknowledged_date) {
+          notificationType = 'ISSUE_ACKNOWLEDGED';
+          notificationTitle = 'Issue acknowledged';
+          notificationMessage = `${req.user.first_name} ${req.user.last_name} has acknowledged your issue "${updatedIssue.title}"`;
+        } else if (status === 'RESOLVED') {
+          notificationType = 'ISSUE_RESOLVED';
+          notificationTitle = 'Issue resolved';
+          notificationMessage = `${req.user.first_name} ${req.user.last_name} marked your issue "${updatedIssue.title}" as resolved`;
+        } else if (status === 'CLOSED') {
+          notificationType = 'ISSUE_CLOSED';
+          notificationTitle = 'Issue closed';
+          notificationMessage = `${req.user.first_name} ${req.user.last_name} closed your issue "${updatedIssue.title}"`;
+        } else {
+          notificationType = 'ISSUE_STATUS_CHANGED';
+          notificationTitle = 'Issue status updated';
+          notificationMessage = `${req.user.first_name} ${req.user.last_name} updated the status of "${updatedIssue.title}" to ${status.replace('_', ' ').toLowerCase()}`;
+        }
+      } else if (priority && priority !== req.body.originalPriority) {
+        notificationType = 'ISSUE_PRIORITY_CHANGED';
+        notificationTitle = 'Issue priority changed';
+        notificationMessage = `${req.user.first_name} ${req.user.last_name} changed the priority of "${updatedIssue.title}" to ${priority}`;
+      } else {
+        // General update
+        notificationTitle = 'Issue updated';
+        notificationMessage = `${req.user.first_name} ${req.user.last_name} updated your issue "${updatedIssue.title}"`;
+      }
+
+      // Create in-app notification for the tenant
+      if (notificationMessage) {
+        await prisma.notification.create({
+          data: {
+            user_id: existingIssue.user_id,
+            type: notificationType,
+            title: notificationTitle,
+            message: notificationMessage,
+            issue_id: updatedIssue.id
+          }
+        });
+      }
+    }
 
     res.json(updatedIssue);
   } catch (error: any) {
