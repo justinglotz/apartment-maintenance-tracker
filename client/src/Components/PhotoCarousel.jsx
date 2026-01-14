@@ -62,24 +62,25 @@ export function PhotoCarousel({ photos, initialIndex = 0, isOpen, onClose }) {
             {photos.map((photo, index) => (
               <CarouselItem key={photo.id} className="flex items-center">
                 <div className="p-1 w-full">
-                  <Card className="border-0 shadow-none">
+                  <Card className="border-0 shadow-none bg-transparent">
                     <CardContent className="relative flex items-center justify-center p-0 max-h-[calc(90vh-8rem)]">
                       <img
                         src={photo.file_path}
                         alt={photo.caption || `Photo ${index + 1}`}
-                        className="max-w-full max-h-full w-auto h-auto object-contain rounded-t-lg"
+                        className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg"
                       />
-                    </CardContent>
-                    {(photo.caption || photo.uploaded_at) && (
-                      <CardFooter className={'flex flex-col items-start justify-end p-4 rounded-b-lg ' + sectionBg.carouselFooter}>
-                        {photo.caption && (
-                          <p className={typography.small + ' text-white mb-2 break-words'}>
+                      {/* Caption overlay on the photo */}
+                      {photo.caption?.trim() && (
+                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-4 rounded-b-lg">
+                          <p className={typography.small + ' text-white break-words'}>
                             {photo.caption}
                           </p>
-                        )}
-                        {photo.uploaded_at && (
+                        </div>
+                      )}
+                      {/* Timestamp overlay in top-right corner */}
+                      {photo.uploaded_at && (
+                        <div className="absolute top-2 right-2 bg-black bg-opacity-60 px-3 py-1 rounded-md">
                           <p className={typography.xsmall + ' text-slate-300'}>
-                            Uploaded:{" "}
                             {new Date(photo.uploaded_at).toLocaleString([], {
                               year: "numeric",
                               month: "numeric",
@@ -88,9 +89,9 @@ export function PhotoCarousel({ photos, initialIndex = 0, isOpen, onClose }) {
                               minute: "2-digit",
                             })}
                           </p>
-                        )}
-                      </CardFooter>
-                    )}
+                        </div>
+                      )}
+                    </CardContent>
                   </Card>
                 </div>
               </CarouselItem>
