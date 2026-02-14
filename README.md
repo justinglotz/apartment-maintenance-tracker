@@ -129,27 +129,6 @@ bonfire-builders/
 └── implementation_steps.md # Detailed implementation notes
 ```
 
-## Current Implementation
-
-This is a **minimal working version** with:
-- ✅ Full Docker setup with 3 containers
-- ✅ React frontend with "Hello World" landing page
-- ✅ Connection status indicator (shows "Connected" when backend + DB are working)
-- ✅ Express backend with health check endpoint
-- ✅ PostgreSQL database with Prisma ORM
-- ✅ Simple `users` table with `name` column
-
-### Not Yet Implemented
-- Authentication (JWT, login/logout)
-- Full database schema (Issues, Comments, Appointments, etc.)
-- Routing and multiple pages
-- Forms and validation
-- File uploads
-- Email notifications
-- Dashboard and data visualization
-
-See `implementation_steps.md` for detailed information.
-
 ## Troubleshooting
 
 ### Port Already Allocated
